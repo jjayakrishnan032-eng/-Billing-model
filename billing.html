@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Rental Billing </title>
+</head>
+<link rel="stylesheet" href="bill.css">
+
+<body>
+    <h2 class="aa">Material Rental Billing</h2>
+    <div class="a">
+        <h2>Name:</h2>
+        <input class="b" type="text" placeholder="name">
+        <h2>Mobile no:</h2>
+        <input class="b" type="text" placeholder="number">
+        <h2>Material:</h2>
+        <select class="d" name="" id="">
+            <option value="10">Sheet - 10₹/-day</option>
+            <option value="20">Pipe - 20₹/-day</option>
+            <option value="30">Column Box - 30₹/-day</option>
+        </select>
+        <h2>Quantity :</h2>
+        <input class="b" type="number" placeholder="Quantity">
+        <h2> From Date:</h2>
+        <input class="c" type="date" id="fromdate">
+        <h2> To Date:</h2>
+        <input class="c" type="date" id="Todate">
+        <h2>Number of Days:</h2>
+        <input class="b" type="text" id="days" readonly>
+        <h2> Damaged Quantity:</h2>
+        <input class="b" type="number">
+        <h2> Advance Amount:</h2>
+        <input class="b" type="number">
+    </div>
+    <button onclick="generateBill()">Generate Bill</button>
+    <style>
+        body {
+            background: white;
+            box-shadow: 5px 5px 10px black;
+            height: 150;
+            width: 500px;
+            margin-left: 30%;
+            padding-bottom: 15px;
+        }
+
+        .aa {
+            background: rgb(50, 121, 193);
+            color: white;
+            padding: 25px;
+            margin: 0%;
+        }
+
+        .a {
+            padding-left: 30px;
+        }
+
+        button {
+            color: white;
+            background-color: rgb(6, 171, 248);
+            cursor: pointer;
+            padding: 10px;
+            margin-left: 190px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .b {
+            padding-right: 280px;
+            height: 25PX;
+            border-radius: 5PX;
+
+        }
+
+        .c {
+            padding-right: 330px;
+            border-radius: 5px;
+            height: 30PX;
+        }
+
+        .d {
+            padding-right: 290px;
+            height: 30PX;
+            border-radius: 5PX;
+
+        }
+    </style>
+    <script>
+        function calculateDays() {
+            const from = new Date(document.getElementById("fromdate").value);
+            const to = new Date(document.getElementById("Todate").value);
+
+            if (from && to && to >= from) {
+                const diffTime = to - from;
+                const diffDays = (diffTime / (1000 * 60 * 60 * 24)) + 1;
+                document.getElementById("days").value = diffDays;
+            } else {
+                document.getElementById("days").value = "";
+            }
+        }
+        document.getElementById("fromdate").addEventListener("change", calculateDays);
+        document.getElementById("Todate").addEventListener("change", calculateDays);
+
+        function generateBill() {
+
+            const rate = parseInt(document.getElementById("material").value);
+            const quantity = parseInt(document.getElementById("quantity").value) || 0;
+            const days = parseInt(document.getElementById("days").value) || 0;
+            const damaged = parseInt(document.getElementById("damaged").value) || 0;
+            const advance = parseInt(document.getElementById("advance").value) || 0;
+
+            const totalRent = quantity * rate * days;
+            const damageCost = damaged * 100;
+            const finalAmount = totalRent + damageCost;
+            const balance = finalAmount - advance;
+
+            const resultDiv = document.getElementById("billResult");
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `
+                  <p><strong>Total Rent:</strong> ₹${totalRent}</p>
+                  <p><strong>Damage Cost:</strong> ₹${damageCost}</p>
+                  <p><strong>Final Amount:</strong> ₹${finalAmount}</p>
+                  <p><strong>Balance:</strong> ₹${balance}</p>
+    `;
+        }
+    </script>
+
+</body>
+
+</html>
